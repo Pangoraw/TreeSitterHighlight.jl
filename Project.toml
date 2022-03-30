@@ -1,0 +1,4 @@
+name = "TreeSitterHighlight"
+uuid = "d012cbc0-9be0-4aad-9a84-80c4f029fdfc"
+authors = ["Paul <paul@plutojl.org>"]
+version = "0.1.0"
