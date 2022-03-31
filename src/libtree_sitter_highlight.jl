@@ -1,9 +1,9 @@
 module LibTreeSitterHighlight
 
-const lib_tree_sitter_highlight =
-    "~/Projects/tree-sitter/target/release/libtree_sitter_highlight.so" |> expanduser
+using tree_sitter_highlight_jll: libtree_sitter_highlight
+using CEnum: @cenum
 
-@enum TSHighlightError begin
+@cenum TSHighlightError begin
     TSHighlightOk
     TSHighlightUnknownScope
     TSHighlightTimeout
@@ -23,7 +23,7 @@ struct TSLanguage end
 #   uint32_t highlight_count
 # );
 function ts_highlighter_new(highlight_names, attribute_strings, highlight_count)
-    @ccall lib_tree_sitter_highlight.ts_highlighter_new(
+    @ccall libtree_sitter_highlight.ts_highlighter_new(
         highlight_names::Ptr{Ptr{Cchar}},
         attribute_strings::Ptr{Ptr{Cchar}},
         highlight_count::Cuint,
@@ -33,7 +33,7 @@ end
 # // Delete a syntax highlighter.
 # void ts_highlighter_delete(TSHighlighter *);
 function ts_highlighter_delete(highlighter)
-    @ccall lib_tree_sitter_highlight.ts_highlighter_delete(
+    @ccall libtree_sitter_highlight.ts_highlighter_delete(
         highlighter::Ptr{TSHighlighter},
     )::Cvoid
 end
@@ -69,7 +69,7 @@ function ts_highlighter_add_language(
     injection_query_len,
     locals_query_len,
 )
-    @ccall lib_tree_sitter_highlight.ts_highlighter_add_language(
+    @ccall libtree_sitter_highlight.ts_highlighter_add_language(
         self::Ptr{TSHighlighter},
         scope_name::Cstring,
         injection_regex::Cstring,
@@ -101,7 +101,7 @@ function ts_highlighter_highlight(
     output,
     cancellation_flag,
 )
-    @ccall lib_tree_sitter_highlight.ts_highlighter_highlight(
+    @ccall libtree_sitter_highlight.ts_highlighter_highlight(
         self::Ptr{TSHighlighter},
         scope_name::Cstring,
         source_code::Cstring,
@@ -116,14 +116,14 @@ end
 # // highlighting. It can be reused for multiple highlighting calls.
 # TSHighlightBuffer *ts_highlight_buffer_new();
 function ts_highlight_buffer_new()
-    @ccall lib_tree_sitter_highlight.ts_highlight_buffer_new()::Ptr{TSHighlightBuffer}
+    @ccall libtree_sitter_highlight.ts_highlight_buffer_new()::Ptr{TSHighlightBuffer}
 end
 
 
 # // Delete a highlight buffer.
 # void ts_highlight_buffer_delete(TSHighlightBuffer *);
 function ts_highlight_buffer_delete(highlighter)
-    @ccall lib_tree_sitter_highlight.ts_highlight_buffer_delete(
+    @ccall libtree_sitter_highlight.ts_highlight_buffer_delete(
         highlighter::Ptr{TSHighlightBuffer},
     )::Cvoid
 end
@@ -132,28 +132,28 @@ end
 # // Access the HTML content of a highlight buffer.
 # const uint8_t *ts_highlight_buffer_content(const TSHighlightBuffer *);
 function ts_highlight_buffer_content(highlighter)
-    @ccall lib_tree_sitter_highlight.ts_highlight_buffer_content(
+    @ccall libtree_sitter_highlight.ts_highlight_buffer_content(
         highlighter::Ptr{TSHighlightBuffer},
     )::Ptr{Cuint}
 end
 
 # const uint32_t *ts_highlight_buffer_line_offsets(const TSHighlightBuffer *);
 function ts_highlight_buffer_line_offsets(highlight_buffer)
-    @ccall lib_tree_sitter_highlight.ts_highlight_buffer_line_offsets(
+    @ccall libtree_sitter_highlight.ts_highlight_buffer_line_offsets(
         highlight_buffer::Ptr{TSHighlightBuffer},
     )::Ptr{Cuint}
 end
 
 # uint32_t ts_highlight_buffer_len(const TSHighlightBuffer *);
 function ts_highlight_buffer_len(highlight_buffer)
-    @ccall lib_tree_sitter_highlight.ts_highlight_buffer_len(
+    @ccall libtree_sitter_highlight.ts_highlight_buffer_len(
         highlight_buffer::Ptr{TSHighlightBuffer},
     )::Cuint
 end
 
 # uint32_t ts_highlight_buffer_line_count(const TSHighlightBuffer *);
 function ts_highlight_buffer_line_count(highlight_buffer)
-    @ccall lib_tree_sitter_highlight.ts_highlight_buffer_line_count(
+    @ccall libtree_sitter_highlight.ts_highlight_buffer_line_count(
         highlight_buffer::Ptr{TSHighlightBuffer},
     )::Cuint
 end
