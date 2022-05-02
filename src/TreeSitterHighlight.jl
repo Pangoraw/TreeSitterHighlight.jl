@@ -1,8 +1,8 @@
 module TreeSitterHighlight
 
-include("./libtree_sitter_highlight.jl")
+include("./lib_tree_sitter_highlight_wasm.jl")
 
-import .LibTreeSitterHighlight as LTSH
+import .LibTreeSitterHighlightWASM as LTSH
 
 function maybe_throw_ts_error(maybe_err)
     err(name) = error("Got error of type $name")
